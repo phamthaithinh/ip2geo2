@@ -28,7 +28,7 @@ public class CSVServiceImpl {
 	private IPGeoDAO dao= new IPGeoDAO();
 	public static String DEFAULT_URL = "http://geolite.maxmind.com/download/geoip/database/GeoIPCountryCSV.zip";
 
-	public void loaCSV(String dataurl) throws IOException {
+	public void loaCSV(String dataurl) throws Exception {
 		URL url = new URL(dataurl == null ? DEFAULT_URL : dataurl);
 		String directory = ConfigReader.readConfig("folder.store.downoad");
 		if (directory.endsWith("/"))
@@ -91,17 +91,15 @@ public class CSVServiceImpl {
 		}
 	}
 
-	private void pushCSV2DB(File csvFile) throws FileNotFoundException {
+	private void pushCSV2DB(File csvFile) throws Exception {
 		Reader reader = new FileReader(csvFile);
 
 		CSVReader<String[]> csvPersonReader = CSVReaderBuilder
 				.newDefaultReader(reader);
 		Iterator<String[]> iter = csvPersonReader.iterator();
 		EntityManager em = JPAHelper.getEntityManager();
-		EntityTransaction txn = em.getTransaction();
-		txn.begin();
+		EntityTransaction txn=null;
 		try {
-			dao.truncateIPGeoTable();
 			while (iter.hasNext()) {
 				String[] a=iter.next();
 				String[] geoCountry=a[0].split(",");
@@ -112,15 +110,18 @@ public class CSVServiceImpl {
 				bean.setToIp(Long.parseLong(geoCountry[3]));
 				bean.setCode2(geoCountry[4]);
 				bean.setName(geoCountry[5]);
+				txn = em.getTransaction();
+				txn.begin();
 				dao.saveorUpdate(bean);
+				txn.commit();
 			}
-			txn.commit();
 		} 
 		catch (Exception ex) {
 			ex.printStackTrace();
 			if (txn != null && txn.isActive()) {
 				txn.rollback();
 			}
+			throw ex;
 		} finally {
 			txn = null;
 			em.close();

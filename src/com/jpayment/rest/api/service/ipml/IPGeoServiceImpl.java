@@ -19,25 +19,34 @@ public class IPGeoServiceImpl implements IPGeoService {
 		return dao.getCountrybyIP(IPUtils.ip2long(ip));
 	}
 
-	public void load() throws IOException {
+	public void load() throws Exception {
 		CSVServiceImpl service = new CSVServiceImpl();
 		try {
 			service.loaCSV(ConfigReader
 					.readConfig("maxmind.geodatabase.country.url"));
-		} catch (IOException e) {
+		} catch (Exception e) {
 			throw e;
 		}
 	}
 
-	public void deletedb() {
+	public void deletedb() throws Exception {
 		EntityManager em = JPAHelper.getEntityManager();
 		EntityTransaction txn = em.getTransaction();
+		try{
 		txn.begin();
 		dao.truncateIPGeoTable();
 		txn.commit();
+		}catch(Exception ex){
+			if(txn!=null&&txn.isActive())txn.rollback();
+			throw ex;
+		}
+		finally{
+			em.close();
+		}
+		
 	}
 
-	public void reload() throws IOException {
+	public void reload() throws Exception {
 		deletedb();
 		load();
 	}

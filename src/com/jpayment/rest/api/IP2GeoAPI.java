@@ -58,6 +58,7 @@ public class IP2GeoAPI extends RestSupport {
 			}
 			return createResponse(response).build();
 		} catch (Exception ex) {
+			log.error("getcountry", ex);
 			IPGeoCountryResponse response = new IPGeoCountryResponse();
 			response.setSuccess("false");
 			response.setMsg(ex.getMessage());
@@ -70,12 +71,14 @@ public class IP2GeoAPI extends RestSupport {
 	public Response delete() {
 		IPGeoService service = new IPGeoServiceImpl();
 		try {
+			log.info("clear db");
 			service.deletedb();
 			IPGeoCountryResponse response = new IPGeoCountryResponse();
 			response.setMsg("success");
 			response.setSuccess("true");
 			return createResponse(response).build();
 		} catch (Exception ex) {
+			log.error("delete", ex);
 			IPGeoCountryResponse response = new IPGeoCountryResponse();
 			response.setSuccess("false");
 			response.setMsg(ex.getMessage());
@@ -87,6 +90,7 @@ public class IP2GeoAPI extends RestSupport {
 	@POST
 	@Path("/" + RestPath.RELOAD)
 	public Response reload() {
+		log.info("Reload");
 		IPGeoService service = new IPGeoServiceImpl();
 		try {
 			service.reload();
@@ -95,6 +99,7 @@ public class IP2GeoAPI extends RestSupport {
 			response.setSuccess("true");
 			return createResponse(response).build();
 		} catch (Exception ex) {
+			log.error("reload", ex);
 			IPGeoCountryResponse response = new IPGeoCountryResponse();
 			response.setSuccess("false");
 			response.setMsg(ex.getMessage());

@@ -2,6 +2,7 @@ package com.jpayment.rest.api.object;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import com.jpayment.rest.AbstractResponse;
 import com.jpayment.rest.ResponseObject;
 
@@ -27,6 +28,7 @@ public class IPGeoCountryResponse extends AbstractResponse implements ResponseOb
 
 	public String toJson() {
 		ObjectMapper mapper = new ObjectMapper();
+		mapper.configure(SerializationFeature.WRITE_NULL_MAP_VALUES, false);
 		try {
 			return mapper.writeValueAsString(this);
 		} catch (JsonProcessingException e) {
