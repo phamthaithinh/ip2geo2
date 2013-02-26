@@ -70,4 +70,58 @@ public class IP2GeoClientHelper {
 		out.put("msg", msg);
 		return out;
 	}
+	@SuppressWarnings("unchecked")
+	public HashMap<String, Object> getCity(String ip) {
+		String getData = "{\"ip\":\"" + ip + "\"}";
+		URL url;
+		String msg = "";
+		try {
+			url = new URL(ConfigReader.getParam("rest.service.city.url"));
+			HttpURLConnection con = (HttpURLConnection) url.openConnection();
+			con.setDoOutput(true);
+			con.setRequestProperty("content-type", "application/json");
+			con.setRequestProperty("Accept", "application/json");
+			con.setDoInput(true);
+			con.setReadTimeout(10000);
+			con.setRequestMethod("POST");
+
+			con.connect();
+			con.getOutputStream().write(getData.getBytes("UTF-8"));
+			InputStream inp = con.getInputStream();
+			BufferedReader br = new BufferedReader(new InputStreamReader(inp));
+
+			StringBuilder sb = new StringBuilder();
+
+			String line;
+			while ((line = br.readLine()) != null) {
+				sb.append(line);
+			}
+			System.out.println(sb.toString());
+			br.close();
+			inp.close();
+			con.disconnect();
+			Gson gson = new Gson();
+			HashMap<String, Object> map = new HashMap<String, Object>();
+			map = (HashMap<String, Object>) gson.fromJson(sb.toString(),
+					map.getClass());
+			map.put("countryCode2", ((String)map.get("countryCode2")).toLowerCase());
+			return map;
+		} catch (MalformedURLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			msg = e.getMessage();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			msg = e.getMessage();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			msg = e.getMessage();
+		}
+		HashMap<String, Object> out = new HashMap<String, Object>();
+		out.put("success", "false");
+		out.put("msg", msg);
+		return out;
+	}
 }
