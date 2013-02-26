@@ -1,6 +1,7 @@
+/*
+ * Copyright (c) 2013 jPayment.org. All Rights Reserved
+ */
 package com.jpayment.rest.api.service.ipml;
-
-import java.io.IOException;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;

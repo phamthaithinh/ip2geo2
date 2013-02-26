@@ -1,3 +1,6 @@
+/*
+ * Copyright (c) 2013 jPayment.org. All Rights Reserved
+ */
 package com.jpayment.rest.api.object;
 
 import com.fasterxml.jackson.core.JsonProcessingException;

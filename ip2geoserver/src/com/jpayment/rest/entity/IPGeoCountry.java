@@ -1,3 +1,6 @@
+/*
+ * Copyright (c) 2013 jPayment.org. All Rights Reserved
+ */
 package com.jpayment.rest.entity;
 
 import javax.persistence.Column;

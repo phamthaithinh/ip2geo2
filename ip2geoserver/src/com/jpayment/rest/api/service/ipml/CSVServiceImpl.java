@@ -1,8 +1,10 @@
+/*
+ * Copyright (c) 2013 jPayment.org. All Rights Reserved
+ */
 package com.jpayment.rest.api.service.ipml;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;

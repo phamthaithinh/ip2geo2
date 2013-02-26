@@ -1,8 +1,9 @@
+/*
+ * Copyright (c) 2013 jPayment.org. All Rights Reserved
+ */
 package com.jpayment.rest.test;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
@@ -20,7 +21,6 @@ public class QueryTest {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		URL url;
-		String line = null;
 		try {
 			url = new URL("http://localhost:8080/ip2geo/rest/ipinfo/country");
 			HttpURLConnection con = (HttpURLConnection) url.openConnection();
