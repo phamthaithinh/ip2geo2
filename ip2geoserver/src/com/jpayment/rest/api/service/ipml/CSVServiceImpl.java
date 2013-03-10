@@ -73,7 +73,7 @@ public class CSVServiceImpl {
 		File zipfile = new File(directory + "/geoCity.zip");
 		FileUtils.copyURLToFile(url, zipfile);
 		HashMap<String, File> cvsFile = unzipCity(zipfile);
-		//pushGeoCity(cvsFile.get("block"), 0);
+		pushGeoCity(cvsFile.get("block"), 0);
 		pushGeoCity(cvsFile.get("location"), 1);
 	}
 
